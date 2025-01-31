@@ -11,12 +11,13 @@ export const metadata: Metadata = {
   description: "Optimize your DeFi yields with AI-powered strategies on Mantle Network",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookies = headers().get("cookie");
+  const headersList = await headers();
+  const cookies = headersList.get("cookie");
 
   return (
     <html lang="en">
