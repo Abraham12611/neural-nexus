@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { headers } from "next/headers";
 import { AppKitProvider } from "@/components/providers/appkit-provider";
+import { PrivyAuthProvider } from "@/components/providers/privy-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,11 @@ export default async function RootLayout({
   const cookies = headersList.get("cookie");
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <AppKitProvider cookies={cookies}>{children}</AppKitProvider>
+        <PrivyAuthProvider>
+          <AppKitProvider cookies={cookies}>{children}</AppKitProvider>
+        </PrivyAuthProvider>
       </body>
     </html>
   );
