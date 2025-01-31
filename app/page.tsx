@@ -1,9 +1,23 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/lib/hooks/use-auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { login, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    } else {
+      login();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       {/* Hero Section */}
@@ -19,8 +33,9 @@ export default function Home() {
             <Button
               className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold h-12 px-6"
               variant="default"
+              onClick={handleGetStarted}
             >
-              Get Started
+              {isAuthenticated ? 'Go to Dashboard' : 'Get Started'}
             </Button>
             <Button 
               variant="outline"
@@ -124,8 +139,9 @@ export default function Home() {
           <Button
             className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold h-12 px-6"
             variant="default"
+            onClick={handleGetStarted}
           >
-            Start Now
+            {isAuthenticated ? 'Go to Dashboard' : 'Start Now'}
           </Button>
         </div>
       </div>
