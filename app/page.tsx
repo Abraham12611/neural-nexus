@@ -12,7 +12,7 @@ export default function Home() {
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
-      router.push('/dashboard');
+      router.push('/dashboard/overview');
     } else {
       login();
     }
