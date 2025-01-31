@@ -17,12 +17,15 @@ export default function Home() {
           </p>
           <div className="flex gap-4">
             <Button
-              className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold"
-              size="lg"
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold h-12 px-6"
+              variant="default"
             >
               Get Started
             </Button>
-            <Button variant="outline" size="lg">
+            <Button 
+              variant="outline"
+              className="h-12 px-6"
+            >
               Learn More
             </Button>
           </div>
@@ -119,8 +122,8 @@ export default function Home() {
             Join Neural Nexus today and experience the future of DeFi yield optimization.
           </p>
           <Button
-            className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold"
-            size="lg"
+            className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold h-12 px-6"
+            variant="default"
           >
             Start Now
           </Button>
