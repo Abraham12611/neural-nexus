@@ -18,6 +18,33 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
           accentColor: '#F5A524',
           logo: 'https://your-logo-url.com/logo.png',
         },
+        supportedChains: [
+          {
+            id: 5001,
+            name: 'Mantle Testnet',
+            network: 'mantle-testnet',
+            nativeCurrency: {
+              name: 'MNT',
+              symbol: 'MNT',
+              decimals: 18,
+            },
+            rpcUrls: {
+              default: {
+                http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
+              },
+              public: {
+                http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
+              },
+            },
+            blockExplorers: {
+              default: {
+                name: 'Mantle Explorer',
+                url: 'https://explorer.testnet.mantle.xyz',
+              },
+            },
+            testnet: true,
+          }
+        ],
         defaultChain: {
           id: 5001,
           name: 'Mantle Testnet',
