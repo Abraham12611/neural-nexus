@@ -10,6 +10,19 @@ const nextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
+  experimental: {
+    // This will allow more granular control over dependencies
+    externalDir: true,
+  },
+  webpack: (config) => {
+    config.resolve.fallback = { 
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    };
+    return config;
+  },
 };
 
 module.exports = nextConfig; 
