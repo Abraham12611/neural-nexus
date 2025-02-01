@@ -1,11 +1,12 @@
 'use client'
 
-import { wagmiAdapter, projectId, metadata } from '@/lib/config'
-import { createAppKit } from '@reown/appkit/react'
+import { AppkitProvider } from "@reown/appkit-react";
+import { wagmiAdapter, projectId, metadata, wagmiConfig } from '@/lib/config'
 import { mantle, mantleSepoliaTestnet } from '@reown/appkit/networks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React, { type ReactNode } from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
+import { type State } from 'wagmi'
 
 // Set up queryClient
 const queryClient = new QueryClient()
@@ -26,19 +27,13 @@ const modal = createAppKit({
   themeMode: 'light'
 })
 
-export function AppKitProvider({ 
-  children,
-  cookies 
-}: { 
-  children: ReactNode
-  cookies: string | null 
-}) {
-  const initialState = cookieToInitialState(wagmiAdapter.wagmiConfig as Config, cookies)
-
+export function AppkitClientProvider({ children, initialState }: { children: ReactNode, initialState?: State }) {
   return (
-    <WagmiProvider config={wagmiAdapter.wagmiConfig as Config} initialState={initialState}>
+    <WagmiProvider config={wagmiConfig} initialState={initialState}>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <AppkitProvider adapter={wagmiAdapter} projectId={projectId} metadata={metadata}>
+          {children}
+        </AppkitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
