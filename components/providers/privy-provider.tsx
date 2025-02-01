@@ -3,25 +3,13 @@
 import { PrivyProvider } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
 import { type ReactNode } from 'react';
+import { config } from '@/lib/config';
 
 export function PrivyAuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  
-  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
-  const mantleRpcUrl = process.env.NEXT_PUBLIC_MANTLE_RPC_URL;
-
-  if (!appId) {
-    console.error('NEXT_PUBLIC_PRIVY_APP_ID is not set');
-    return <div>Configuration Error: Please check environment variables.</div>;
-  }
-
-  if (!mantleRpcUrl) {
-    console.error('NEXT_PUBLIC_MANTLE_RPC_URL is not set');
-    return <div>Configuration Error: Please check environment variables.</div>;
-  }
 
   const mantleChain = {
-    id: 5001,
+    id: config.MANTLE_CHAIN_ID,
     name: 'Mantle Testnet',
     network: 'mantle-testnet',
     nativeCurrency: {
@@ -31,10 +19,10 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
     },
     rpcUrls: {
       default: {
-        http: [mantleRpcUrl],
+        http: [config.MANTLE_RPC_URL],
       },
       public: {
-        http: [mantleRpcUrl],
+        http: [config.MANTLE_RPC_URL],
       },
     },
     blockExplorers: {
@@ -48,7 +36,7 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <PrivyProvider
-      appId={appId}
+      appId={config.PRIVY_APP_ID}
       onSuccess={() => router.push('/dashboard')}
       config={{
         loginMethods: ['email', 'wallet'],
@@ -59,8 +47,9 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
         },
         embeddedWallets: {
           noPromptOnSignature: true,
+          createOnLogin: 'all'
         },
-        defaultChain: mantleChain,
+        defaultNetwork: mantleChain,
       }}
     >
       {children}
