@@ -1,6 +1,5 @@
-import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { cookieStorage, createStorage } from "wagmi";
-import { mantle, mantleSepoliaTestnet } from '@reown/appkit/networks'
+import { createConfig, cookieStorage, createStorage } from "wagmi";
+import { mantleTestnet } from 'wagmi/chains';
 
 // TESTING ONLY - DO NOT USE IN PRODUCTION
 export const appConfig = {
@@ -28,22 +27,15 @@ export const appConfig = {
 
 // Get projectId from config
 export const projectId = appConfig.PROJECT_ID;
-export const networks = [mantle, mantleSepoliaTestnet]
 
-if (!projectId) throw new Error("Project ID is not defined");
-
-// Set up the Wagmi Adapter
-export const wagmiAdapter = new WagmiAdapter({
+// Set up Wagmi config
+export const wagmiConfig = createConfig({
+  chains: [mantleTestnet],
   storage: createStorage({
-    storage: cookieStorage
+    storage: cookieStorage,
   }),
-  ssr: true,
-  networks,
-  projectId
-})
-
-// Export wagmi config
-export const wagmiConfig = wagmiAdapter.wagmiConfig
+  projectId,
+});
 
 // App metadata
 export const metadata = {
@@ -51,4 +43,4 @@ export const metadata = {
   description: "AI-Powered DeFi Yield Optimization on Mantle Network",
   url: "https://neuralnexus.app", // Update this with your actual domain
   icons: ["https://neuralnexus.app/icon.png"] // Update with your actual icon
-} 
+}; 
