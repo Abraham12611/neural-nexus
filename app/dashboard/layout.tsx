@@ -10,6 +10,8 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown, LayoutDashboard, PieChart, History, Settings } from "lucide-react";
+import { IUser } from "@/types/privy";
+import { WalletConnect } from "@/components/wallet-connect";
 
 const navigation = [
   { name: 'Overview', href: '/dashboard/overview', icon: LayoutDashboard },
@@ -20,16 +22,18 @@ const navigation = [
 
 export default function DashboardLayout({
   children,
+  user,
 }: {
   children: React.ReactNode;
+  user: IUser;
 }) {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const pathname = usePathname();
 
   // Get user's email and wallet address safely
-  const userEmail = user?.email?.address || user?.email || '';
-  const userWalletAddress = user?.wallet?.address || '';
-  const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : 'U';
+  const email = user?.email?.address || user?.email || '';
+  const walletAddress = user?.wallet?.address || '';
+  const userInitial = email ? email.charAt(0).toUpperCase() : 'U';
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
@@ -100,43 +104,13 @@ export default function DashboardLayout({
       {/* Main Content */}
       <div className="lg:pl-64">
         {/* Header */}
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-800 bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <div className="flex flex-1 items-center justify-end gap-x-4 self-stretch lg:gap-x-6">
-            {/* Network Status */}
-            <Button variant="outline" className="hidden sm:flex">
-              <div className="h-2 w-2 rounded-full bg-green-400 mr-2" />
-              Mantle Testnet
-            </Button>
-
-            {/* User Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback>{userInitial}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {userEmail}
-                    </p>
-                    {userWalletAddress && (
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {userWalletAddress.slice(0, 6)}...
-                        {userWalletAddress.slice(-4)}
-                      </p>
-                    )}
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => logout()}>
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container flex h-14 items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="font-bold">Neural Nexus</span>
+              {email && <span className="text-sm text-muted-foreground">{email}</span>}
+            </div>
+            <WalletConnect />
           </div>
         </header>
 
