@@ -110,7 +110,7 @@ export default function DashboardLayout({
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={user?.profileImage} alt={user?.email} />
                     <AvatarFallback>
-                      {user?.email?.charAt(0).toUpperCase()}
+                      {user?.email?.address?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
