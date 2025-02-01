@@ -6,10 +6,21 @@ import { type ReactNode } from 'react';
 
 export function PrivyAuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
+  
+  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+  const mantleRpcUrl = process.env.NEXT_PUBLIC_MANTLE_RPC_URL;
+
+  if (!appId) {
+    throw new Error('NEXT_PUBLIC_PRIVY_APP_ID is not set in environment variables');
+  }
+
+  if (!mantleRpcUrl) {
+    throw new Error('NEXT_PUBLIC_MANTLE_RPC_URL is not set in environment variables');
+  }
 
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+      appId={appId}
       onSuccess={() => router.push('/dashboard')}
       config={{
         loginMethods: ['email', 'wallet'],
@@ -30,10 +41,10 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
             },
             rpcUrls: {
               default: {
-                http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
+                http: [mantleRpcUrl],
               },
               public: {
-                http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
+                http: [mantleRpcUrl],
               },
             },
             blockExplorers: {
@@ -56,10 +67,10 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
           },
           rpcUrls: {
             default: {
-              http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
+              http: [mantleRpcUrl],
             },
             public: {
-              http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
+              http: [mantleRpcUrl],
             },
           },
           blockExplorers: {
