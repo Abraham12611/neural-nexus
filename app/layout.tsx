@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./fonts.css";
 import { headers } from "next/headers";
 import { AppKitProvider } from "@/components/providers/appkit-provider";
 import { PrivyAuthProvider } from "@/components/providers/privy-provider";
