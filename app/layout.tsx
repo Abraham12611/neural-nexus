@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import "./fonts.css";
 import { headers } from "next/headers";
 import { AppKitProvider } from "@/components/providers/appkit-provider";
 import { PrivyAuthProvider } from "@/components/providers/privy-provider";
 import { CrossmintProvider } from "@/components/providers/crossmint-provider";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Neural Nexus - AI-Powered DeFi Yield Optimization",
@@ -23,7 +21,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className="font-inter">
         <PrivyAuthProvider>
           <CrossmintProvider>
             <AppKitProvider cookies={cookies}>{children}</AppKitProvider>
