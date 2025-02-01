@@ -1,33 +1,19 @@
 'use client';
 
-import { useCrossmintEvents, useCrossmintWallet } from '@crossmint/client-sdk-react-ui';
+import { useCrossmint as useCrossmintBase } from '@crossmint/client-sdk-react-ui';
 import { useEffect, useState } from 'react';
 
 export function useCrossmint() {
-  const { wallet, connect, disconnect } = useCrossmintWallet();
+  const { wallet, connect, disconnect } = useCrossmintBase();
   const [balance, setBalance] = useState<string>('0');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Listen to Crossmint events
-  useCrossmintEvents({
-    onConnectSuccess: () => {
-      console.log('Wallet connected successfully');
+  useEffect(() => {
+    if (wallet?.address) {
       fetchBalance();
-    },
-    onConnectError: (error) => {
-      console.error('Failed to connect wallet:', error);
-      setError('Failed to connect wallet');
-    },
-    onDisconnectSuccess: () => {
-      console.log('Wallet disconnected successfully');
-      setBalance('0');
-    },
-    onDisconnectError: (error) => {
-      console.error('Failed to disconnect wallet:', error);
-      setError('Failed to disconnect wallet');
-    },
-  });
+    }
+  }, [wallet?.address]);
 
   const fetchBalance = async () => {
     if (!wallet?.address) return;
@@ -46,11 +32,35 @@ export function useCrossmint() {
     }
   };
 
+  // Handle wallet events
   useEffect(() => {
-    if (wallet?.address) {
+    const handleConnect = () => {
+      console.log('Wallet connected successfully');
       fetchBalance();
-    }
-  }, [wallet?.address]);
+    };
+
+    const handleDisconnect = () => {
+      console.log('Wallet disconnected successfully');
+      setBalance('0');
+    };
+
+    const handleError = (err: Error) => {
+      console.error('Wallet error:', err);
+      setError(err.message);
+    };
+
+    // Add event listeners
+    window.addEventListener('crossmint_connectSuccess', handleConnect);
+    window.addEventListener('crossmint_disconnectSuccess', handleDisconnect);
+    window.addEventListener('crossmint_error', handleError as EventListener);
+
+    return () => {
+      // Remove event listeners
+      window.removeEventListener('crossmint_connectSuccess', handleConnect);
+      window.removeEventListener('crossmint_disconnectSuccess', handleDisconnect);
+      window.removeEventListener('crossmint_error', handleError as EventListener);
+    };
+  }, []);
 
   return {
     wallet,

@@ -91,11 +91,11 @@ export class AIStrategy {
   }
 
   // Get recommended strategies based on risk preference
-  public getStrategies(riskPreference: 'conservative' | 'moderate' | 'aggressive'): Strategy[] {
+  public getStrategies(riskPreference: 'low' | 'medium' | 'high'): Strategy[] {
     const maxRiskScore = {
-      conservative: 4,
-      moderate: 7,
-      aggressive: 10,
+      low: 4,
+      medium: 7,
+      high: 10,
     }[riskPreference];
 
     return this.pools
