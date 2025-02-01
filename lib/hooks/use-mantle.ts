@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { MantleService } from '../services/mantle-service';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 export function useMantle() {
   const [mantleService, setMantleService] = useState<MantleService | null>(null);
