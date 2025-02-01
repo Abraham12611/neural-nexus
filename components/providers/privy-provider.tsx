@@ -3,13 +3,40 @@
 import { PrivyProvider } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
 import { type ReactNode } from 'react';
+import { appConfig } from '@/lib/config';
 
 export function PrivyAuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
+  const mantleChain = {
+    id: appConfig.MANTLE_CHAIN_ID,
+    name: 'Mantle Testnet',
+    network: 'mantle-testnet',
+    nativeCurrency: {
+      name: 'MNT',
+      symbol: 'MNT',
+      decimals: 18,
+    },
+    rpcUrls: {
+      default: {
+        http: [appConfig.MANTLE_RPC_URL],
+      },
+      public: {
+        http: [appConfig.MANTLE_RPC_URL],
+      },
+    },
+    blockExplorers: {
+      default: {
+        name: 'Mantle Explorer',
+        url: 'https://explorer.testnet.mantle.xyz',
+      },
+    },
+    testnet: true,
+  };
+
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+      appId={appConfig.PRIVY_APP_ID}
       onSuccess={() => router.push('/dashboard')}
       config={{
         loginMethods: ['email', 'wallet'],
@@ -18,58 +45,11 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
           accentColor: '#F5A524',
           logo: 'https://your-logo-url.com/logo.png',
         },
-        supportedChains: [
-          {
-            id: 5001,
-            name: 'Mantle Testnet',
-            network: 'mantle-testnet',
-            nativeCurrency: {
-              name: 'MNT',
-              symbol: 'MNT',
-              decimals: 18,
-            },
-            rpcUrls: {
-              default: {
-                http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
-              },
-              public: {
-                http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
-              },
-            },
-            blockExplorers: {
-              default: {
-                name: 'Mantle Explorer',
-                url: 'https://explorer.testnet.mantle.xyz',
-              },
-            },
-            testnet: true,
-          }
-        ],
-        defaultChain: {
-          id: 5001,
-          name: 'Mantle Testnet',
-          network: 'mantle-testnet',
-          nativeCurrency: {
-            name: 'MNT',
-            symbol: 'MNT',
-            decimals: 18,
-          },
-          rpcUrls: {
-            default: {
-              http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
-            },
-            public: {
-              http: [process.env.NEXT_PUBLIC_MANTLE_RPC_URL!],
-            },
-          },
-          blockExplorers: {
-            default: {
-              name: 'Mantle Explorer',
-              url: 'https://explorer.testnet.mantle.xyz',
-            },
-          },
-          testnet: true,
+        embeddedWallets: {
+          noPromptOnSignature: true,
+          createOnLogin: true
         },
+        defaultNetwork: mantleChain,
       }}
     >
       {children}
