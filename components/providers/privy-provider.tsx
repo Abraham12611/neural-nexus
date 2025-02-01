@@ -3,13 +3,13 @@
 import { PrivyProvider } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
 import { type ReactNode } from 'react';
-import { config } from '@/lib/config';
+import { appConfig } from '@/lib/config';
 
 export function PrivyAuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const mantleChain = {
-    id: config.MANTLE_CHAIN_ID,
+    id: appConfig.MANTLE_CHAIN_ID,
     name: 'Mantle Testnet',
     network: 'mantle-testnet',
     nativeCurrency: {
@@ -19,10 +19,10 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
     },
     rpcUrls: {
       default: {
-        http: [config.MANTLE_RPC_URL],
+        http: [appConfig.MANTLE_RPC_URL],
       },
       public: {
-        http: [config.MANTLE_RPC_URL],
+        http: [appConfig.MANTLE_RPC_URL],
       },
     },
     blockExplorers: {
@@ -36,7 +36,7 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <PrivyProvider
-      appId={config.PRIVY_APP_ID}
+      appId={appConfig.PRIVY_APP_ID}
       onSuccess={() => router.push('/dashboard')}
       config={{
         loginMethods: ['email', 'wallet'],
@@ -47,7 +47,7 @@ export function PrivyAuthProvider({ children }: { children: ReactNode }) {
         },
         embeddedWallets: {
           noPromptOnSignature: true,
-          createOnLogin: 'all'
+          createOnLogin: true
         },
         defaultNetwork: mantleChain,
       }}
