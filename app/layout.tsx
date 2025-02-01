@@ -5,6 +5,12 @@ import { headers } from "next/headers";
 import { AppKitProvider } from "@/components/providers/appkit-provider";
 import { PrivyAuthProvider } from "@/components/providers/privy-provider";
 import { CrossmintProvider } from "@/components/providers/crossmint-provider";
+import { Inter } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "Neural Nexus - AI-Powered DeFi Yield Optimization",
@@ -20,7 +26,7 @@ export default async function RootLayout({
   const cookies = headersList.get("cookie");
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={inter.className}>
       <body className="font-inter">
         <PrivyAuthProvider>
           <CrossmintProvider>
